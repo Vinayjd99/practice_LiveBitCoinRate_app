@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>Live BTC App</title>
+        <style>
+            *{font-size: 40px; font-family: calibri;}
+            body{background-color: linen;}
+            h2{border: solid; border-radius: 30px; width: 80%; padding: 5px;}
+            input[type=radio] {
+                width: 2%;
+                height: 0.6em;
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <h1>Live BTC App</h1>
+            <form onsubmit="find()">
+                <input type="radio" name="c" id="USD" checked="true" />USD
+                <input type="radio" name="c" id="GBP" />GBP
+                <input type="radio" name="c" id="EUR" />EUR
+                <br><br>
+                <input type="submit" value="Get Live BTC Rates">
+            </form>
+            <h2 id="msg"></h2>
+
+        </center>
+        <script>
+            function find() {
+                event.preventDefault();
+                let msg = document.getElementById("msg");
+                let USD = document.getElementById("USD");
+                let GBP = document.getElementById("GBP");
+                let EUR = document.getElementById("EUR");
+
+
+                let url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+
+                fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    let rate;
+                    if (USD.checked) rate = "$" + data.bpi.USD.rate;
+                    if (GBP.checked) rate = "&pound;" + data.bpi.GBP.rate;
+                    if (EUR.checked) rate ="&euro;" + data.bpi.EUR.rate;
+                    msg.innerHTML = rate;
+                })
+                .catch(err => alert("issue" + err));
+              
+            }
+
+        </script>
+    </body>
+</html>
